@@ -10,6 +10,7 @@ import Foundation
 
 // A struct fot Constants
 struct Constans {
+    
     static let url: String = "https://api.github.com/gists"
     static let urlOAuthCode: String = "https://github.com/login/oauth/authorize"
     static let urlOAuthToken: String = "https://github.com/login/oauth/access_token"

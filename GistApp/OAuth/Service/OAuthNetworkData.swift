@@ -61,7 +61,7 @@ class OAuthNetwork {
         }
     }
     
-    
+    // Post request for addding new gist
     public func addGist(name: String, content: String, completion: @escaping  (_ info: String) -> Void) {
         guard let url = URL(string: Constans.url) else {return}
         let parametrs = ["files": [name: ["content": content]] ]
