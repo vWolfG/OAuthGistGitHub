@@ -18,7 +18,6 @@ class GistViewController: UIViewController {
     private let gistTableView = UITableView()
     private var gistsViewModel = GistsViewModel()
     private var gists = [Gist]()
-    private var isFirstLoading = true
     private let cellId = "GistCellId"
     private let disposeBag = DisposeBag()
     private var token = ""
@@ -26,10 +25,7 @@ class GistViewController: UIViewController {
     // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
-        if isFirstLoading {
-            uploadData()
-        }
-        isFirstLoading = false
+        uploadData()
         setupNavBar()
         setupUI()
     }
@@ -71,7 +67,7 @@ class GistViewController: UIViewController {
     
     // A function for uploading Gists from GitHub
     private func uploadData(){
-        self.token = keychain.string(forKey: "access_token") as! String
+        self.token = keychain.string(forKey: "access_token") ?? ""
         guard !self.token.isEmpty else {
             goToAuth()
             return
@@ -79,10 +75,14 @@ class GistViewController: UIViewController {
         gistsViewModel.loadGists { [weak self] (gistArray) in
             guard let self = self else { return }
             self.gists = gistArray
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.gistTableView.reloadData()
+            if !self.gists.isEmpty {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.gistTableView.reloadData()
+                }
             }
+            
+            
         }
     }
 
